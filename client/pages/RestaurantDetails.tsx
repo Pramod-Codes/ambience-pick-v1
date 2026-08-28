@@ -16,10 +16,10 @@ function ReservationField({
   value,
   children,
 }: {
-  icon: React.ElementType;
+  icon: ElementType;
   label: string;
   value: string | null;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="relative flex items-center gap-2 rounded-xl bg-muted px-3.5 py-3.5">
