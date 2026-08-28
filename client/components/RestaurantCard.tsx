@@ -77,7 +77,7 @@ export function RestaurantCard({
           >
             <Heart
               className={cn(
-                "h-4.5 w-4.5",
+                "h-4 w-4",
                 isFavorite && "fill-accent text-accent",
               )}
             />
