@@ -1,0 +1,19 @@
+{
+  "name": "Ambience Pick",
+  "short_name": "Ambience Pick",
+  "description": "Discover and reserve the perfect dining ambience.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2456e8",
+  "icons": [
+    {
+      "src": "/ambience-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

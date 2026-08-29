@@ -13,7 +13,7 @@ export function BottomNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center pb-5">
+    <nav className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
       <div className="pointer-events-auto flex items-center gap-1 rounded-full bg-white px-2 py-2 shadow-nav ring-1 ring-black/5">
         {ITEMS.map(({ to, label, icon: Icon }) => {
           const active = pathname === to;
