@@ -26,18 +26,20 @@ function ReservationField({
   label,
   value,
   children,
+  className,
 }: {
   icon: ElementType;
   label: string;
   value: string | null;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="relative flex items-center gap-2 rounded-xl bg-muted px-3.5 py-3.5">
+    <div className={cn("relative flex min-w-0 items-center gap-2 rounded-xl bg-muted px-3.5 py-3.5", className)}>
       <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
       <span
         className={cn(
-          "flex-1 truncate text-sm",
+          "min-w-0 flex-1 truncate text-sm",
           value ? "font-medium text-foreground" : "text-muted-foreground",
         )}
       >
@@ -146,11 +148,12 @@ export default function RestaurantDetails() {
           </ReservationField>
 
           <div className="flex gap-3">
-            <ReservationField icon={Clock} label="Select Time Slot" value={time || null}>
+            <ReservationField className="flex-1" icon={Clock} label="Select Time Slot" value={time || null}>
               <button type="button" onClick={() => setSheet("time")} className="absolute inset-0" aria-label="Select time" />
             </ReservationField>
 
             <ReservationField
+              className="flex-1"
               icon={Users}
               label="Select Guests"
               value={guests ? `${guests} Guests` : null}
