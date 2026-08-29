@@ -24,6 +24,7 @@ interface AppContextValue {
 
   bookings: ConfirmedBooking[];
   addBooking: (booking: ConfirmedBooking) => void;
+  updateBookingStatus: (bookingId: string, status: ConfirmedBooking["status"]) => void;
 }
 
 const emptyDraft: BookingDraft = {
@@ -76,6 +77,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       bookings,
       addBooking: (booking: ConfirmedBooking) =>
         setBookings((prev) => [booking, ...prev]),
+      updateBookingStatus: (bookingId, status) =>
+        setBookings((prev) => prev.map((booking) => booking.id === bookingId ? { ...booking, status } : booking)),
     }),
     [isAuthenticated, userEmail, favorites, draft, bookings],
   );

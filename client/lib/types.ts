@@ -53,5 +53,5 @@ export interface ConfirmedBooking {
   amountPaid: number;
   fullName: string;
   phone: string;
-  status: "Confirmed";
+  status: "Confirmed" | "Cancelled" | "Completed";
 }

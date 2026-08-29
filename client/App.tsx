@@ -14,7 +14,9 @@ import RestaurantDetails from "./pages/RestaurantDetails";
 import SelectTable from "./pages/SelectTable";
 import BookingSummary from "./pages/BookingSummary";
 import BookingStatus from "./pages/BookingStatus";
-import { PlaceholderScreen } from "@/components/PlaceholderScreen";
+import Bookings from "./pages/Bookings";
+import Saved from "./pages/Saved";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,9 +36,9 @@ const App = () => (
             <Route path="/restaurant/:id/select-table" element={<SelectTable />} />
             <Route path="/restaurant/:id/summary" element={<BookingSummary />} />
             <Route path="/restaurant/:id/confirmed/:bookingId" element={<BookingStatus />} />
-            <Route path="/bookings" element={<PlaceholderScreen title="Bookings" />} />
-            <Route path="/favorites" element={<PlaceholderScreen title="Saved" />} />
-            <Route path="/profile" element={<PlaceholderScreen title="Profile" />} />
+            <Route path="/bookings" element={<Bookings />} />
+            <Route path="/favorites" element={<Saved />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
