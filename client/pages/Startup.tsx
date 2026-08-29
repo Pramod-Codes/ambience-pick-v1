@@ -4,7 +4,7 @@ import { Shell } from "@/components/Shell";
 import { WaveHero } from "@/components/WaveHero";
 
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80";
+  "https://cdn.builder.io/api/v1/image/assets%2F3308099169c54c16b8166ea80f823051%2F4f2dd7112a4b41df862d4c73046c7c26?format=webp&width=800&height=1200";
 
 export default function Startup() {
   const navigate = useNavigate();

@@ -2,6 +2,7 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -41,8 +42,19 @@ const AppContext = createContext<AppContextValue | null>(null);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const saved = window.localStorage.getItem("ambience-pick-favorites");
+      return new Set(saved ? (JSON.parse(saved) as string[]) : []);
+    } catch {
+      return new Set();
+    }
+  });
   const [draft, setDraft] = useState<BookingDraft>(emptyDraft);
+
+  useEffect(() => {
+    window.localStorage.setItem("ambience-pick-favorites", JSON.stringify([...favorites]));
+  }, [favorites]);
   const [bookings, setBookings] = useState<ConfirmedBooking[]>([]);
 
   const value = useMemo<AppContextValue>(

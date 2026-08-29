@@ -44,7 +44,7 @@ export function DetailHero({
         <button
           onClick={onToggleFavorite}
           aria-label="Save"
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform active:scale-90"
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-soft transition-transform active:scale-90"
         >
           <Heart
             className={cn("h-4 w-4", isFavorite && "fill-current")}
