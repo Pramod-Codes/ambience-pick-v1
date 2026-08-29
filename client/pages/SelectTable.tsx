@@ -45,13 +45,12 @@ function TableGrid({
 
   if (zone === "bar") {
     return (
-      <div className="grid grid-cols-[42px_1fr] gap-4">
-        <div className="relative min-h-[600px] rounded-l-full bg-muted-foreground/45">
-          <div className="absolute inset-y-4 left-full flex w-8 flex-col justify-between py-2">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => <div key={id} className="h-10">{renderTable(id)}</div>)}
-          </div>
+      <div className="grid grid-cols-[22px_34px_minmax(0,1fr)] items-start gap-x-3">
+        <div className="row-span-3 h-[670px] rounded-l-full bg-muted-foreground/45" />
+        <div className="grid grid-rows-9 gap-y-3 py-5">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => <div key={id} className="h-10">{renderTable(id)}</div>)}
         </div>
-        <div className="grid grid-cols-3 items-center gap-x-4 gap-y-7 pt-2">
+        <div className="grid grid-cols-3 items-start gap-x-4 gap-y-7 pt-2">
           {[10, 11, 12, 13, 14, 15].map((id) => <div key={id}>{renderTable(id)}</div>)}
           <div className="col-span-3 grid grid-cols-2 gap-5 px-1">{[16, 17].map((id) => <div key={id}>{renderTable(id)}</div>)}</div>
           <div className="col-span-3 px-1">{renderTable(18)}</div>
