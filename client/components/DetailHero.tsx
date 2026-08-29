@@ -7,21 +7,22 @@ export function DetailHero({
   isFavorite,
   onToggleFavorite,
   onBack,
+  onMore,
 }: {
   images: string[];
   isFavorite: boolean;
   onToggleFavorite: () => void;
   onBack: () => void;
+  onMore?: () => void;
 }) {
   const [active, setActive] = useState(0);
-  const extra = images.length - 5;
 
   return (
     <div className="relative">
       <div className="relative h-64 w-full overflow-hidden">
         {active === 0 ? (
           <video
-            src="https://videos.pexels.com/video-files/6328272/6328272-sd_640_360_25fps.mp4"
+            src="https://videos.pexels.com/video-files/18284447/18284447-sd_360_640_30fps.mp4"
             poster={images[0]}
             autoPlay
             muted
@@ -50,23 +51,37 @@ export function DetailHero({
           />
         </button>
         <div className="absolute inset-x-4 bottom-4 z-10 flex gap-2 overflow-x-auto rounded-2xl bg-black/25 p-2 backdrop-blur-sm no-scrollbar">
-        {images.slice(0, 5).map((img, i) => (
+        <button
+          onClick={() => setActive(0)}
+          aria-label="Restaurant ambience video"
+          className={cn(
+            "relative h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-2 transition-all",
+            active === 0 ? "ring-primary" : "ring-transparent",
+          )}
+        >
+          <img src={images[0]} alt="Restaurant ambience video" className="h-full w-full object-cover" />
+          <span className="absolute inset-0 flex items-center justify-center bg-black/25 text-white">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-black/55 text-[10px]">▶</span>
+          </span>
+        </button>
+        {images.slice(1, 5).map((img, i) => (
           <button
-            key={i}
-            onClick={() => setActive(i)}
+            key={img}
+            onClick={() => setActive(i + 1)}
             className={cn(
               "h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-2 transition-all",
-              active === i ? "ring-primary" : "ring-transparent",
+              active === i + 1 ? "ring-primary" : "ring-transparent",
             )}
           >
-            <img src={img} alt="" className="h-full w-full object-cover" />
+            <img src={img} alt="Restaurant gallery" className="h-full w-full object-cover" />
           </button>
         ))}
-        {extra > 0 && (
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-muted text-sm font-semibold text-muted-foreground">
-            +{extra}
-          </div>
-        )}
+        <button
+          onClick={onMore}
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-black/55 text-sm font-semibold text-white"
+        >
+          +6
+        </button>
         </div>
       </div>
     </div>

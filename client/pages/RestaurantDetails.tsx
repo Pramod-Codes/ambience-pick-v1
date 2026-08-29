@@ -90,6 +90,7 @@ export default function RestaurantDetails() {
         isFavorite={favorites.has(restaurant.id)}
         onToggleFavorite={() => toggleFavorite(restaurant.id)}
         onBack={() => navigate(-1)}
+        onMore={() => setTab("Gallery")}
       />
 
       <div className="flex flex-col gap-4 px-5 pt-4">
