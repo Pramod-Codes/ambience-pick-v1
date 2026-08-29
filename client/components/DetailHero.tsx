@@ -19,7 +19,7 @@ export function DetailHero({
 
   return (
     <div className="relative">
-      <div className="relative h-64 w-full overflow-hidden">
+      <div className="relative h-[360px] w-full overflow-hidden">
         {active === 0 ? (
           <video
             src="https://videos.pexels.com/video-files/18284447/18284447-sd_360_640_30fps.mp4"

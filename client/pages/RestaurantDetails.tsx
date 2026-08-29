@@ -162,13 +162,15 @@ export default function RestaurantDetails() {
             </ReservationField>
           </div>
 
-          <button
-            onClick={handleSelectTable}
-            disabled={!canSelectTable}
-            className="w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground shadow-soft transition-transform active:scale-[0.98] disabled:opacity-40"
-          >
-            Select Table
-          </button>
+          <div className="sticky bottom-0 z-20 -mx-5 bg-background px-5 pb-2 pt-3">
+            <button
+              onClick={handleSelectTable}
+              disabled={!canSelectTable}
+              className="w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground shadow-soft transition-transform active:scale-[0.98] disabled:opacity-40"
+            >
+              Select Table
+            </button>
+          </div>
         </div>
       </div>
       {sheet === "date" && <BottomSheet title="Select Date" onClose={() => setSheet(null)}><div className="rounded-2xl bg-background shadow-card ring-1 ring-border/50"><div className="flex items-center justify-between border-b border-border px-4 py-4"><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} className="rounded-lg border p-2"><ChevronLeft className="h-5 w-5" /></button><strong className="font-heading text-lg">{month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</strong><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} className="rounded-lg border p-2"><ChevronDown className="h-5 w-5 rotate-[-90deg]" /></button></div><div className="grid grid-cols-7 gap-y-4 p-4 text-center text-sm"><div className="col-span-7 grid grid-cols-7 text-muted-foreground">{["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => <span key={d} className="font-medium">{d}</span>)}</div>{Array.from({ length: new Date(month.getFullYear(), month.getMonth(), 1).getDay() === 0 ? 6 : new Date(month.getFullYear(), month.getMonth(), 1).getDay() - 1 }).map((_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate() }, (_, i) => i + 1).map((day) => { const value = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`; return <button key={value} onClick={() => { setDate(value); setSheet(null); }} className={cn("mx-auto flex h-9 w-9 items-center justify-center rounded-full", date === value ? "bg-primary text-white" : "hover:bg-muted")}>{day}</button>; })}</div></div><button onClick={() => setSheet(null)} className="mt-6 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Date</button></BottomSheet>}
