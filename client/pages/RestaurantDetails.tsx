@@ -4,11 +4,17 @@ import { CalendarDays, ChevronDown, ChevronLeft, Clock, MapPin, Star, Users, X }
 import { Shell } from "@/components/Shell";
 import { DetailHero } from "@/components/DetailHero";
 import { PillTabs } from "@/components/PillTabs";
-import { getRestaurant, TIME_SLOTS } from "@/lib/mock-data";
+import { getRestaurant } from "@/lib/mock-data";
 import { useApp } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
 
 const TABS = ["Overview", "Menu", "Gallery", "Reviews", "About"];
+const MEAL_SLOTS = {
+  Breakfast: ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM"],
+  Lunch: ["12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM"],
+  Dinner: ["7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM", "9:30 PM", "10:00 PM"],
+} as const;
+type Meal = keyof typeof MEAL_SLOTS;
 type Sheet = "date" | "time" | "guests" | null;
 
 function BottomSheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
@@ -52,6 +58,7 @@ export default function RestaurantDetails() {
   const [tab, setTab] = useState("Overview");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
+  const [meal, setMeal] = useState<Meal>("Dinner");
   const [guests, setGuests] = useState<number | null>(null);
   const [sheet, setSheet] = useState<Sheet>(null);
   const [month, setMonth] = useState(new Date(2026, 5, 1));
@@ -162,7 +169,7 @@ export default function RestaurantDetails() {
         </div>
       </div>
       {sheet === "date" && <BottomSheet title="Select Date" onClose={() => setSheet(null)}><div className="rounded-2xl bg-background shadow-card ring-1 ring-border/50"><div className="flex items-center justify-between border-b border-border px-4 py-4"><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} className="rounded-lg border p-2"><ChevronLeft className="h-5 w-5" /></button><strong className="font-heading text-lg">{month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</strong><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} className="rounded-lg border p-2"><ChevronDown className="h-5 w-5 rotate-[-90deg]" /></button></div><div className="grid grid-cols-7 gap-y-4 p-4 text-center text-sm"><div className="col-span-7 grid grid-cols-7 text-muted-foreground">{["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => <span key={d} className="font-medium">{d}</span>)}</div>{Array.from({ length: new Date(month.getFullYear(), month.getMonth(), 1).getDay() === 0 ? 6 : new Date(month.getFullYear(), month.getMonth(), 1).getDay() - 1 }).map((_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate() }, (_, i) => i + 1).map((day) => { const value = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`; return <button key={value} onClick={() => { setDate(value); setSheet(null); }} className={cn("mx-auto flex h-9 w-9 items-center justify-center rounded-full", date === value ? "bg-primary text-white" : "hover:bg-muted")}>{day}</button>; })}</div></div><button onClick={() => setSheet(null)} className="mt-6 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Date</button></BottomSheet>}
-      {sheet === "time" && <BottomSheet title="Select Time Slot" onClose={() => setSheet(null)}><div className="mb-6 flex gap-3 overflow-x-auto">{["Breakfast", "Lunch", "Dinner"].map((period) => <button key={period} className={cn("rounded-full px-5 py-2 text-sm font-medium", period === "Dinner" ? "bg-primary text-white" : "bg-muted text-foreground")}>{period}</button>)}</div><div className="grid grid-cols-3 gap-3">{[...TIME_SLOTS, "9:00 PM", "9:30 PM", "10:00 PM"].map((slot) => <button key={slot} onClick={() => { setTime(slot); setSheet(null); }} className={cn("rounded-lg border py-3 text-sm", time === slot ? "border-primary bg-primary text-white" : "bg-muted/30")}>{slot}</button>)}</div><button onClick={() => setSheet(null)} className="mt-8 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Time Slot</button></BottomSheet>}
+      {sheet === "time" && <BottomSheet title="Select Time Slot" onClose={() => setSheet(null)}><div className="mb-6 flex gap-3 overflow-x-auto">{(Object.keys(MEAL_SLOTS) as Meal[]).map((period) => <button key={period} type="button" onClick={() => { setMeal(period); setTime(""); }} className={cn("rounded-full px-5 py-2 text-sm font-medium transition-colors", meal === period ? "bg-primary text-white shadow-soft" : "bg-muted text-foreground")}>{period}</button>)}</div><div className="grid grid-cols-3 gap-3">{MEAL_SLOTS[meal].map((slot) => <button key={slot} type="button" onClick={() => { setTime(slot); setSheet(null); }} className={cn("rounded-lg border py-3 text-sm transition-colors", time === slot ? "border-primary bg-primary text-white" : "bg-muted/30")}>{slot}</button>)}</div><button type="button" onClick={() => setSheet(null)} className="mt-8 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Time Slot</button></BottomSheet>}
       {sheet === "guests" && <BottomSheet title="Select Number of Guests" onClose={() => setSheet(null)}><div className="flex gap-3 overflow-x-auto pb-2">{Array.from({ length: 10 }, (_, i) => i + 1).map((g) => <button key={g} onClick={() => { setGuests(g); setSheet(null); }} className={cn("min-w-[72px] rounded-lg border py-4 text-lg", guests === g ? "border-primary bg-primary text-white" : "bg-muted/30")}>{g}</button>)}</div><button onClick={() => setSheet(null)} className="mt-16 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Number of Guests</button></BottomSheet>}
     </Shell>
   );
