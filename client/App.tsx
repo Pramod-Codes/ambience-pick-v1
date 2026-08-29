@@ -5,8 +5,16 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AppProvider } from "@/context/AppContext";
+import Startup from "./pages/Startup";
+import SignIn from "./pages/SignIn";
+import Home from "./pages/Home";
+import RestaurantDetails from "./pages/RestaurantDetails";
+import SelectTable from "./pages/SelectTable";
+import BookingSummary from "./pages/BookingSummary";
+import BookingStatus from "./pages/BookingStatus";
+import { PlaceholderScreen } from "@/components/PlaceholderScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,13 +24,23 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AppProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Startup />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+            <Route path="/restaurant/:id/select-table" element={<SelectTable />} />
+            <Route path="/restaurant/:id/summary" element={<BookingSummary />} />
+            <Route path="/restaurant/:id/confirmed/:bookingId" element={<BookingStatus />} />
+            <Route path="/bookings" element={<PlaceholderScreen title="Bookings" />} />
+            <Route path="/favorites" element={<PlaceholderScreen title="Saved" />} />
+            <Route path="/profile" element={<PlaceholderScreen title="Profile" />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
