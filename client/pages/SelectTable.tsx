@@ -47,8 +47,8 @@ function TableGrid({
     return (
       <div className="grid grid-cols-[22px_34px_minmax(0,1fr)] items-start gap-x-3">
         <div className="row-span-3 h-[670px] rounded-l-full bg-muted-foreground/45" />
-        <div className="grid grid-rows-9 gap-y-3 py-5">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => <div key={id} className="h-10">{renderTable(id)}</div>)}
+        <div className="grid grid-rows-9 gap-y-2 py-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => <div key={id} className="h-14">{renderTable(id)}</div>)}
         </div>
         <div className="grid grid-cols-3 items-start gap-x-4 gap-y-7 pt-2">
           {[10, 11, 12, 13, 14, 15].map((id) => <div key={id}>{renderTable(id)}</div>)}

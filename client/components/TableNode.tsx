@@ -37,7 +37,7 @@ export function TableNode({
         onClick={onClick}
         disabled={table.status === "reserved"}
         className={cn(
-          "flex aspect-square w-full items-center justify-center rounded-lg text-xs font-bold text-white shadow-soft transition-transform active:scale-95",
+          "flex h-14 w-full items-center justify-center rounded-lg text-xs font-bold text-white shadow-soft transition-transform active:scale-95",
           styles.table,
           recommendation && "ring-4 ring-warning ring-offset-2",
         )}
