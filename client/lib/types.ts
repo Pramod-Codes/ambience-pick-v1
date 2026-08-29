@@ -3,7 +3,7 @@ export type TableStatus = "available" | "reserved" | "selected";
 
 export interface TableDef {
   id: number;
-  seats: number;
+  capacity: 2 | 4 | 6 | 8 | 10;
   shape: TableShape;
   status: TableStatus;
   colSpan?: number;

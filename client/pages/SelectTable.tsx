@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Shell } from "@/components/Shell";
 import { PageHeader } from "@/components/PageHeader";
@@ -13,6 +13,14 @@ const ZONES: { value: DiningZone; label: string }[] = [
   { value: "bar", label: "Bar" },
   { value: "terrace", label: "Terrace" },
 ];
+
+function getRequiredTableCapacity(guests: number): 2 | 4 | 6 | 8 | 10 {
+  if (guests <= 2) return 2;
+  if (guests <= 4) return 4;
+  if (guests <= 6) return 6;
+  if (guests <= 8) return 8;
+  return 10;
+}
 
 function TableGrid({
   tables,
@@ -82,13 +90,21 @@ export default function SelectTable() {
 
   const tables = restaurant?.tables[zone] ?? [];
   const requestedGuests = draft.guests;
+  const requiredTableCapacity = getRequiredTableCapacity(requestedGuests);
   const recommendedIds = useMemo(() => {
     const available = tables.filter((table) => table.status === "available" || table.status === "selected");
-    const fitting = available.filter((table) => table.seats >= requestedGuests);
-    const candidates = fitting.length ? fitting : available;
-    const closest = candidates.reduce((best, table) => Math.min(best, Math.abs(table.seats - requestedGuests)), Infinity);
-    return new Set(candidates.filter((table) => Math.abs(table.seats - requestedGuests) === closest).map((table) => table.id));
-  }, [tables, requestedGuests]);
+    const fitting = available.filter((table) => table.capacity === requiredTableCapacity);
+    const candidates = fitting;
+    return new Set(candidates.map((table) => table.id));
+  }, [tables, requiredTableCapacity]);
+
+  const visibleTables = tables.filter((table) => table.capacity === requiredTableCapacity);
+
+  useEffect(() => {
+    if (selectedTable && !visibleTables.some((table) => table.id === selectedTable && table.status !== "reserved")) {
+      setSelectedTable(null);
+    }
+  }, [requiredTableCapacity, zone]);
 
   if (!restaurant) return null;
 
@@ -97,12 +113,12 @@ export default function SelectTable() {
     setSelectedTable((current) => (current === table.id ? null : table.id));
   }
 
-  const selected = tables.find((table) => table.id === selectedTable);
-  const selectedGuests = selected?.seats ?? requestedGuests;
+  const selected = visibleTables.find((table) => table.id === selectedTable && table.status !== "reserved");
+  const selectedGuests = selected?.capacity ?? requiredTableCapacity;
 
   function handleReserve() {
     if (!selected) return;
-    setDraftDetails(draft.date!, draft.time!, selected.seats);
+    setDraftDetails(draft.date!, draft.time!, selected.capacity);
     setDraftTable(zone, selected.id);
     navigate(`/restaurant/${restaurant.id}/summary`);
   }
@@ -118,8 +134,8 @@ export default function SelectTable() {
         <span className="flex items-center gap-2"><i className="h-4 w-4 rounded bg-warning" />Recommended</span>
       </div>
       <div className="no-scrollbar flex-1 overflow-y-auto px-5 pb-24">
-        <p className="mb-4 rounded-xl bg-primary/10 px-3 py-2 text-center text-xs font-medium text-primary">Tables highlighted in gold are best suited for {requestedGuests} guests</p>
-        <TableGrid tables={tables} zone={zone} recommendedIds={recommendedIds} selectedTable={selectedTable} onPick={pickTable} />
+        <p className="mb-4 rounded-xl bg-primary/10 px-3 py-2 text-center text-xs font-medium text-primary">Select your table · Tables for {requiredTableCapacity} guests</p>
+        {visibleTables.length ? <TableGrid tables={visibleTables} zone={zone} recommendedIds={recommendedIds} selectedTable={selectedTable} onPick={pickTable} /> : <div className="rounded-2xl bg-muted/60 px-5 py-10 text-center"><p className="font-heading text-base font-semibold">No tables available for {requiredTableCapacity} guests</p><p className="mt-1 text-sm text-muted-foreground">Try another time or change your guest count.</p><button onClick={() => navigate(`/restaurant/${restaurant.id}`)} className="mt-5 rounded-full border border-primary px-5 py-2.5 text-sm font-semibold text-primary">Change Time</button></div>}
       </div>
       <div className="absolute inset-x-0 bottom-0 bg-background px-5 pb-7 pt-3">
         <button onClick={handleReserve} disabled={!selected} className="w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground shadow-soft transition-transform active:scale-[0.98] disabled:opacity-40">
