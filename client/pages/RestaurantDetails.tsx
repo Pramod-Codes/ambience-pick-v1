@@ -1,14 +1,19 @@
 import { useState, type ElementType, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CalendarDays, ChevronDown, Clock, MapPin, Star, Users } from "lucide-react";
+import { CalendarDays, ChevronDown, ChevronLeft, Clock, MapPin, Star, Users, X } from "lucide-react";
 import { Shell } from "@/components/Shell";
 import { DetailHero } from "@/components/DetailHero";
 import { PillTabs } from "@/components/PillTabs";
-import { getRestaurant, GUEST_OPTIONS, TIME_SLOTS } from "@/lib/mock-data";
+import { getRestaurant, TIME_SLOTS } from "@/lib/mock-data";
 import { useApp } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
 
 const TABS = ["Overview", "Menu", "Gallery", "Reviews", "About"];
+type Sheet = "date" | "time" | "guests" | null;
+
+function BottomSheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  return <div className="fixed inset-0 z-50 mx-auto flex max-w-[480px] items-end bg-black/70"><div className="w-full rounded-t-[2rem] bg-background px-5 pb-7 pt-4 shadow-2xl"><div className="mx-auto mb-7 h-1.5 w-12 rounded-full bg-foreground" /><div className="mb-5 flex items-center justify-between"><h2 className="font-heading text-xl font-semibold">{title}</h2><button onClick={onClose} aria-label="Close" className="rounded-full p-2 text-muted-foreground hover:bg-muted"><X className="h-5 w-5" /></button></div>{children}</div></div>;
+}
 
 function ReservationField({
   icon: Icon,
@@ -48,6 +53,8 @@ export default function RestaurantDetails() {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [guests, setGuests] = useState<number | null>(null);
+  const [sheet, setSheet] = useState<Sheet>(null);
+  const [month, setMonth] = useState(new Date(2026, 5, 1));
 
   if (!restaurant) {
     return (
@@ -115,20 +122,11 @@ export default function RestaurantDetails() {
 
         <PillTabs tabs={TABS} active={tab} onChange={setTab} />
 
-        {tab === "Overview" ? (
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-foreground">
-              {restaurant.description}
-            </p>
-            <p className="text-sm italic text-muted-foreground">
-              &ldquo;{restaurant.quote}&rdquo;
-            </p>
-          </div>
-        ) : (
-          <p className="py-4 text-sm text-muted-foreground">
-            {tab} details for {restaurant.name} will appear here.
-          </p>
-        )}
+        {tab === "Overview" && <div className="space-y-2"><p className="text-sm font-medium text-foreground">{restaurant.description}</p><p className="text-sm italic text-muted-foreground">&ldquo;{restaurant.quote}&rdquo;</p></div>}
+        {tab === "Menu" && <div className="space-y-3"><p className="text-sm text-muted-foreground">A seasonal menu crafted around local ingredients and familiar favorites.</p>{["Truffle Burrata", "Wild Mushroom Risotto", "Citrus Olive Oil Cake"].map((item, i) => <div key={item} className="flex justify-between rounded-xl bg-muted px-4 py-3 text-sm"><span className="font-medium">{item}</span><span className="text-muted-foreground">${[18, 28, 12][i]}</span></div>)}</div>}
+        {tab === "Gallery" && <div className="grid grid-cols-3 gap-2">{restaurant.gallery.map((img) => <img key={img} src={img} alt="Restaurant interior" className="aspect-square rounded-xl object-cover" />)}</div>}
+        {tab === "Reviews" && <div className="space-y-3"><div className="flex items-center gap-2"><Star className="h-5 w-5 fill-warning text-warning" /><strong>{restaurant.rating} out of 5</strong><span className="text-sm text-muted-foreground">from {restaurant.reviews} guests</span></div><p className="rounded-xl bg-muted p-4 text-sm italic text-muted-foreground">“A beautiful setting, thoughtful service, and an unforgettable evening.”</p></div>}
+        {tab === "About" && <p className="text-sm leading-6 text-muted-foreground">{restaurant.name} brings a warm, thoughtful dining experience to New York City. The space is designed for intimate dinners, celebrations, and memorable nights out.</p>}
 
         <div className="space-y-3 pb-2">
           <h2 className="font-heading text-base font-semibold text-foreground">
@@ -136,30 +134,12 @@ export default function RestaurantDetails() {
           </h2>
 
           <ReservationField icon={CalendarDays} label="Select Date" value={dateLabel}>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-            />
+            <button type="button" onClick={() => setSheet("date")} className="absolute inset-0" aria-label="Select date" />
           </ReservationField>
 
           <div className="flex gap-3">
             <ReservationField icon={Clock} label="Select Time Slot" value={time || null}>
-              <select
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-              >
-                <option value="" disabled>
-                  Select Time Slot
-                </option>
-                {TIME_SLOTS.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
+              <button type="button" onClick={() => setSheet("time")} className="absolute inset-0" aria-label="Select time" />
             </ReservationField>
 
             <ReservationField
@@ -167,20 +147,7 @@ export default function RestaurantDetails() {
               label="Select Guests"
               value={guests ? `${guests} Guests` : null}
             >
-              <select
-                value={guests ?? ""}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-              >
-                <option value="" disabled>
-                  Select Guests
-                </option>
-                {GUEST_OPTIONS.map((g) => (
-                  <option key={g} value={g}>
-                    {g} Guests
-                  </option>
-                ))}
-              </select>
+              <button type="button" onClick={() => setSheet("guests")} className="absolute inset-0" aria-label="Select guests" />
             </ReservationField>
           </div>
 
@@ -193,6 +160,9 @@ export default function RestaurantDetails() {
           </button>
         </div>
       </div>
+      {sheet === "date" && <BottomSheet title="Select Date" onClose={() => setSheet(null)}><div className="rounded-2xl bg-background shadow-card ring-1 ring-border/50"><div className="flex items-center justify-between border-b border-border px-4 py-4"><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} className="rounded-lg border p-2"><ChevronLeft className="h-5 w-5" /></button><strong className="font-heading text-lg">{month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</strong><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} className="rounded-lg border p-2"><ChevronDown className="h-5 w-5 rotate-[-90deg]" /></button></div><div className="grid grid-cols-7 gap-y-4 p-4 text-center text-sm"><div className="col-span-7 grid grid-cols-7 text-muted-foreground">{["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => <span key={d} className="font-medium">{d}</span>)}</div>{Array.from({ length: new Date(month.getFullYear(), month.getMonth(), 1).getDay() === 0 ? 6 : new Date(month.getFullYear(), month.getMonth(), 1).getDay() - 1 }).map((_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate() }, (_, i) => i + 1).map((day) => { const value = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`; return <button key={value} onClick={() => { setDate(value); setSheet(null); }} className={cn("mx-auto flex h-9 w-9 items-center justify-center rounded-full", date === value ? "bg-primary text-white" : "hover:bg-muted")}>{day}</button>; })}</div></div><button onClick={() => setSheet(null)} className="mt-6 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Date</button></BottomSheet>}
+      {sheet === "time" && <BottomSheet title="Select Time Slot" onClose={() => setSheet(null)}><div className="mb-6 flex gap-3 overflow-x-auto">{["Breakfast", "Lunch", "Dinner"].map((period) => <button key={period} className={cn("rounded-full px-5 py-2 text-sm font-medium", period === "Dinner" ? "bg-primary text-white" : "bg-muted text-foreground")}>{period}</button>)}</div><div className="grid grid-cols-3 gap-3">{[...TIME_SLOTS, "9:00 PM", "9:30 PM", "10:00 PM"].map((slot) => <button key={slot} onClick={() => { setTime(slot); setSheet(null); }} className={cn("rounded-lg border py-3 text-sm", time === slot ? "border-primary bg-primary text-white" : "bg-muted/30")}>{slot}</button>)}</div><button onClick={() => setSheet(null)} className="mt-8 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Time Slot</button></BottomSheet>}
+      {sheet === "guests" && <BottomSheet title="Select Number of Guests" onClose={() => setSheet(null)}><div className="flex gap-3 overflow-x-auto pb-2">{Array.from({ length: 10 }, (_, i) => i + 1).map((g) => <button key={g} onClick={() => { setGuests(g); setSheet(null); }} className={cn("min-w-[72px] rounded-lg border py-4 text-lg", guests === g ? "border-primary bg-primary text-white" : "bg-muted/30")}>{g}</button>)}</div><button onClick={() => setSheet(null)} className="mt-16 w-full rounded-full bg-primary py-4 font-semibold text-white">Confirm Number of Guests</button></BottomSheet>}
     </Shell>
   );
 }

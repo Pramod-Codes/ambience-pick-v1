@@ -19,11 +19,19 @@ export function DetailHero({
   return (
     <div className="relative">
       <div className="relative h-64 w-full overflow-hidden">
-        <img
-          src={images[active]}
-          alt=""
-          className="h-full w-full object-cover"
-        />
+        {active === 0 ? (
+          <video
+            src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+            poster={images[0]}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <img src={images[active]} alt="" className="h-full w-full object-cover" />
+        )}
         <div className="absolute inset-0 bg-black/10" />
         <button
           onClick={onBack}

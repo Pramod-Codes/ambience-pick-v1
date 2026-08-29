@@ -182,7 +182,7 @@ export const TIME_SLOTS = [
   "8:30 PM",
 ];
 
-export const GUEST_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
+export const GUEST_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export function getRestaurant(id: string) {
   return RESTAURANTS.find((r) => r.id === id);
