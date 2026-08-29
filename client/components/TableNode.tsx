@@ -21,11 +21,14 @@ function Chair({
 export function TableNode({
   table,
   onClick,
+  recommended = false,
 }: {
   table: TableDef;
   onClick?: () => void;
+  recommended?: boolean;
 }) {
   const styles = STATUS_STYLES[table.status];
+  const recommendation = recommended && table.status === "available";
   const disabled = table.status !== "available" && table.status !== "selected";
 
   if (table.shape === "seat") {
@@ -36,6 +39,7 @@ export function TableNode({
         className={cn(
           "flex aspect-square w-full items-center justify-center rounded-lg text-xs font-bold text-white shadow-soft transition-transform active:scale-95",
           styles.table,
+          recommendation && "ring-4 ring-warning ring-offset-2",
         )}
       >
         {table.id}
@@ -71,7 +75,8 @@ export function TableNode({
           className={cn(
             "flex h-full w-full items-center justify-center rounded-full text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
             styles.table,
-          )}
+          recommendation && "ring-4 ring-warning ring-offset-2",
+        )}
         >
           {table.id}
         </div>
@@ -102,7 +107,8 @@ export function TableNode({
           className={cn(
             "flex h-full w-full items-center justify-center rounded-xl text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
             styles.table,
-          )}
+          recommendation && "ring-4 ring-warning ring-offset-2",
+        )}
         >
           {table.id}
         </div>
@@ -124,6 +130,7 @@ export function TableNode({
         className={cn(
           "flex h-full w-full items-center justify-center rounded-xl text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
           styles.table,
+          recommendation && "ring-4 ring-warning ring-offset-2",
         )}
       >
         {table.id}
