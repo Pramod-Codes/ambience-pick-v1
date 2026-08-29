@@ -4,7 +4,7 @@ import { Shell } from "@/components/Shell";
 import { WaveHero } from "@/components/WaveHero";
 
 const HERO_IMAGE =
-  "https://cdn.builder.io/api/v1/image/assets%2F3308099169c54c16b8166ea80f823051%2F4f2dd7112a4b41df862d4c73046c7c26?format=webp&width=800&height=1200";
+  "https://cdn.builder.io/api/v1/image/assets%2F3308099169c54c16b8166ea80f823051%2Fe7d9896d3a0d4d09ad3cb18dc3c33f48?format=webp&width=800&height=1200";
 
 export default function Startup() {
   const navigate = useNavigate();
