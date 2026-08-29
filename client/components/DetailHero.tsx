@@ -1,4 +1,4 @@
-import { Heart, Play, ChevronLeft } from "lucide-react";
+import { Heart, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -49,14 +49,7 @@ export function DetailHero({
             className={cn("h-4 w-4", isFavorite && "fill-current")}
           />
         </button>
-        <button
-          aria-label="Play video"
-          className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/30 text-white ring-1 ring-white/70 backdrop-blur-sm transition-transform active:scale-90"
-        >
-          <Play className="h-6 w-6 fill-current" />
-        </button>
-      </div>
-      <div className="flex gap-2 overflow-x-auto px-4 pt-3 no-scrollbar">
+        <div className="absolute inset-x-4 bottom-4 z-10 flex gap-2 overflow-x-auto rounded-2xl bg-black/25 p-2 backdrop-blur-sm no-scrollbar">
         {images.slice(0, 5).map((img, i) => (
           <button
             key={i}
@@ -74,6 +67,7 @@ export function DetailHero({
             +{extra}
           </div>
         )}
+        </div>
       </div>
     </div>
   );
