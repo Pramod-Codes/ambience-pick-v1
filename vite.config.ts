@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   const base = repositoryName ? `/${repositoryName}/` : "/";
 
   return {
-    base,
+    base: "/ambience-pick-v1/",
     server: {
       host: "::",
       port: 8080,
