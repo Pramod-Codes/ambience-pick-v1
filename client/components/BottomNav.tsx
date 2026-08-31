@@ -24,9 +24,7 @@ export function BottomNav() {
               className={cn(
                 "flex items-center gap-2 rounded-full px-3 py-2.5 transition-all duration-200",
                 active
-                  ? to === "/favorites"
-                    ? "bg-accent text-accent-foreground pr-4 shadow-soft"
-                    : "bg-primary text-primary-foreground pr-4 shadow-soft"
+                  ? "bg-primary text-primary-foreground pr-4 shadow-soft"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
