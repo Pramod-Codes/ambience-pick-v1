@@ -1,6 +1,7 @@
 import { Check, CalendarDays, Clock, MapPin, Users } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import { Shell } from "@/components/Shell";
 import { PageHeader } from "@/components/PageHeader";
 import { getRestaurant } from "@/lib/mock-data";
@@ -39,7 +40,8 @@ export default function BookingStatus() {
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground"><span className="flex items-center gap-1"><CalendarDays className="h-4 w-4" />{formatDate(booking.date)}</span><span className="flex items-center gap-1"><Clock className="h-4 w-4" />{booking.time}</span><span className="flex items-center gap-1"><Users className="h-4 w-4" />{booking.guests} Guests</span></div>
         <h2 className="mt-7 font-heading text-base font-semibold">Booking Details</h2>
         <div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span>Booking ID</span><strong>#{booking.id}</strong></div><div className="flex justify-between"><span>Status</span><strong className="text-success">{booking.status}</strong></div><div className="flex justify-between"><span>Amount Paid</span><strong>${booking.amountPaid.toFixed(2)}</strong></div></div>
-        <div className="mt-7 rounded-xl bg-primary/15 px-4 py-3 text-center text-sm font-medium text-primary">Reservation Charges will be adjusted in your final bill payment at the restaurant</div>
+        <div className="mt-7 flex items-center gap-4 rounded-2xl border border-border bg-background p-3 shadow-soft"><div className="rounded-xl bg-white p-2"><QRCodeSVG value={`Ambience Pick | ${restaurant.name} | ${zoneName} Table ${booking.tableId} | ${booking.date} ${booking.time} | ${booking.guests} guests | ${booking.id}`} size={96} bgColor="#ffffff" fgColor="#16213b" includeMargin /></div><div className="min-w-0"><p className="font-heading text-sm font-semibold">Ready for entry</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Show this QR code at the restaurant when you arrive.</p><p className="mt-2 text-xs font-semibold text-primary">Scan booking #{booking.id}</p></div></div>
+        <div className="mt-4 rounded-xl bg-primary/15 px-4 py-3 text-center text-sm font-medium text-primary">Reservation Charges will be adjusted in your final bill payment at the restaurant</div>
         <div className="flex-1" />
         {booking.status === "Confirmed" && <div className="mt-7 grid grid-cols-2 gap-3"><button onClick={() => setCancelOpen(true)} className="rounded-full border border-destructive py-3 text-sm font-semibold text-destructive">Cancel Booking</button><button onClick={() => navigate("/profile")} className="rounded-full border border-border py-3 text-sm font-semibold">Get Help</button></div>}
         <button onClick={() => navigate("/home")} className="mt-3 w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground shadow-soft transition-transform active:scale-[0.98]">Back To Home</button>
