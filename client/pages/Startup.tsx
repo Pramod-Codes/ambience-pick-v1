@@ -11,7 +11,7 @@ export default function Startup() {
 
   return (
     <Shell noPadBottom>
-      <WaveHero image={HERO_IMAGE} height="h-[65vh]" />
+      <WaveHero image={HERO_IMAGE} height="h-[72vh]" />
       <div className="flex flex-1 flex-col justify-between px-7 pb-10 pt-2">
         <div className="space-y-3">
           <h1 className="font-heading text-3xl font-bold text-foreground">
