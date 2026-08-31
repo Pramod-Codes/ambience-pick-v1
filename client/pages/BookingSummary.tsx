@@ -1,6 +1,5 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { QRCodeSVG } from "qrcode.react";
 import { CalendarDays, Clock, MapPin, Users } from "lucide-react";
 import { Shell } from "@/components/Shell";
 import { PageHeader } from "@/components/PageHeader";
@@ -85,10 +84,6 @@ export default function BookingSummary() {
           <span className="flex items-center gap-1"><Users className="h-4 w-4" />{draft.guests} Guests</span>
         </div>
 
-        <div className="flex items-center gap-4 rounded-2xl border border-border bg-background p-3 shadow-soft">
-          <div className="rounded-xl bg-white p-2"><QRCodeSVG value={`Ambience Pick | ${restaurant.name} | ${zoneName} Table ${draft.tableId} | ${draft.date} ${draft.time} | ${draft.guests} guests`} size={92} bgColor="#ffffff" fgColor="#16213b" includeMargin /></div>
-          <div className="min-w-0"><p className="font-heading text-sm font-semibold">Scan for easy entry</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Show this QR code at {restaurant.name} when you arrive.</p><p className="mt-2 text-xs font-semibold text-primary">Table #{draft.tableId} · {draft.guests} guests</p></div>
-        </div>
 
         <div className="space-y-2 pt-1 text-sm">
           <p className="font-medium">Table Reservation Charges – $2.00/person</p>
