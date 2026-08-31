@@ -48,7 +48,7 @@ function TableGrid({
           status: selectedTable === item.id ? "selected" : item.status === "selected" ? "available" : item.status,
         }}
         recommended={recommendedIds.has(item.id)}
-        selectable={item.capacity >= requestedGuests}
+        selectable={item.capacity === getRequiredTableCapacity(requestedGuests)}
         onClick={() => onPick(item)}
       />
     );
@@ -96,13 +96,13 @@ export default function SelectTable() {
   const requiredTableCapacity = getRequiredTableCapacity(requestedGuests);
   const recommendedIds = useMemo(() => {
     const available = tables.filter((table) => table.status === "available" || table.status === "selected");
-    const candidates = available.filter((table) => table.capacity >= requestedGuests);
+    const candidates = available.filter((table) => table.capacity === requiredTableCapacity);
     return new Set(candidates.map((table) => table.id));
   }, [tables, requiredTableCapacity]);
-  const hasMatchingAvailable = tables.some((table) => (table.status === "available" || table.status === "selected") && table.capacity >= requestedGuests);
+  const hasMatchingAvailable = tables.some((table) => (table.status === "available" || table.status === "selected") && table.capacity === requiredTableCapacity);
 
   useEffect(() => {
-    if (selectedTable && !tables.some((table) => table.id === selectedTable && table.status !== "reserved" && table.capacity >= requestedGuests)) {
+    if (selectedTable && !tables.some((table) => table.id === selectedTable && table.status !== "reserved" && table.capacity === requiredTableCapacity)) {
       setSelectedTable(null);
     }
   }, [requiredTableCapacity, requestedGuests, zone, selectedTable, tables]);
@@ -110,11 +110,11 @@ export default function SelectTable() {
   if (!restaurant) return null;
 
   function pickTable(table: TableDef) {
-    if (table.status === "reserved" || table.capacity < requestedGuests) return;
+    if (table.status === "reserved" || table.capacity !== requiredTableCapacity) return;
     setSelectedTable((current) => (current === table.id ? null : table.id));
   }
 
-  const selected = tables.find((table) => table.id === selectedTable && table.status !== "reserved" && table.capacity >= requestedGuests);
+  const selected = tables.find((table) => table.id === selectedTable && table.status !== "reserved" && table.capacity === requiredTableCapacity);
 
   function handleReserve() {
     if (!selected) return;
