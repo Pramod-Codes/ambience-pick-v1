@@ -4,7 +4,7 @@ import path from "node:path";
 import { createServer } from "./server";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
 
   return {
     base: "/ambience-pick-v1/",
