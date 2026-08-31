@@ -170,7 +170,7 @@ export default function RestaurantDetails() {
               disabled={!canSelectTable}
               className="w-full rounded-full bg-primary py-4 text-base font-semibold text-primary-foreground shadow-soft transition-transform active:scale-[0.98] disabled:opacity-40"
             >
-              Select Table
+              Reserve for {guests ?? "—"} Guests
             </button>
           </div>
         </div>

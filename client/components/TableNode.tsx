@@ -22,14 +22,17 @@ export function TableNode({
   table,
   onClick,
   recommended = false,
+  selectable = true,
 }: {
   table: TableDef;
   onClick?: () => void;
   recommended?: boolean;
+  selectable?: boolean;
 }) {
   const styles = STATUS_STYLES[table.status];
   const recommendation = recommended && table.status === "available";
-  const disabled = table.status !== "available" && table.status !== "selected";
+  const disabled = !selectable || (table.status !== "available" && table.status !== "selected");
+  const disabledStyle = disabled && "cursor-not-allowed opacity-40 grayscale";
 
   if (table.shape === "seat") {
     return (
@@ -40,6 +43,7 @@ export function TableNode({
           "relative flex h-14 w-full items-center justify-center rounded-lg text-xs font-bold text-white shadow-soft transition-transform active:scale-95",
           styles.table,
           recommendation && "ring-4 ring-warning ring-offset-2",
+          disabledStyle,
         )}
       >
         <span className={cn("absolute -left-1 top-1/2 h-4 w-1.5 -translate-y-1/2 rounded-full", styles.chair)} />
@@ -55,7 +59,7 @@ export function TableNode({
       <button
         onClick={onClick}
         disabled={disabled}
-        className="relative aspect-square w-full p-3"
+        className={cn("relative aspect-square w-full p-3", disabledStyle)}
       >
         {Array.from({ length: chairCount }).map((_, i) => {
           const angle = (i / chairCount) * 2 * Math.PI - Math.PI / 2;
@@ -78,6 +82,7 @@ export function TableNode({
             "flex h-full w-full items-center justify-center rounded-full text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
             styles.table,
           recommendation && "ring-4 ring-warning ring-offset-2",
+          disabledStyle,
         )}
         >
           {table.id}
@@ -92,7 +97,7 @@ export function TableNode({
       <button
         onClick={onClick}
         disabled={disabled}
-        className="relative w-full p-2.5"
+        className={cn("relative w-full p-2.5", disabledStyle)}
         style={{ aspectRatio: table.colSpan && table.colSpan >= 3 ? "5/1" : "2.4/1" }}
       >
         <div className="absolute inset-x-3 -top-0.5 flex justify-between">
@@ -110,6 +115,7 @@ export function TableNode({
             "flex h-full w-full items-center justify-center rounded-xl text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
             styles.table,
           recommendation && "ring-4 ring-warning ring-offset-2",
+          disabledStyle,
         )}
         >
           {table.id}
@@ -122,7 +128,7 @@ export function TableNode({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="relative aspect-square w-full p-2.5"
+      className={cn("relative aspect-square w-full p-2.5", disabledStyle)}
     >
       {Array.from({ length: table.capacity }).map((_, i) => {
         const angle = (i / table.capacity) * 2 * Math.PI - Math.PI / 2;
@@ -133,6 +139,7 @@ export function TableNode({
           "flex h-full w-full items-center justify-center rounded-xl text-sm font-bold text-white shadow-soft transition-transform active:scale-95",
           styles.table,
           recommendation && "ring-4 ring-warning ring-offset-2",
+          disabledStyle,
         )}
       >
         {table.id}
