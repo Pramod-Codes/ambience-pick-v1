@@ -271,7 +271,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "harbor-and-salt",
     name: "Harbor & Salt",
-    image: "https://images.unsplash.com/photo-1534080564583-35c9d92a54c8?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=85",
     gallery: [
       "https://images.unsplash.com/photo-1534080564583-35c9d92a54c8?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80",
