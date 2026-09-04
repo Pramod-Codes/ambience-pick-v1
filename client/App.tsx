@@ -74,7 +74,13 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+const rootContainer = document.getElementById("root")!;
+const hotWindow = window as Window & {
+  __ambiencePickRoot?: ReturnType<typeof createRoot>;
+};
+const root = hotWindow.__ambiencePickRoot ?? createRoot(rootContainer);
+hotWindow.__ambiencePickRoot = root;
+root.render(<App />);
 
 if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
