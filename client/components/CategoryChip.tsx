@@ -18,16 +18,15 @@ export function CategoryChip({
     >
       <div
         className={cn(
-          "relative h-[78px] w-[78px] overflow-hidden rounded-2xl ring-2 transition-all",
+          "relative h-[78px] w-[78px] overflow-hidden rounded-full border-4 border-background bg-muted shadow-card ring-2 transition-all",
           active ? "ring-primary" : "ring-transparent",
         )}
       >
-        <img src={image} alt={name} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/35" />
-        <span className="absolute inset-x-0 bottom-2 text-center text-xs font-semibold text-white">
-          {name}
-        </span>
+        <img src={image} alt={`${name} dish served on a plate`} className="h-full w-full object-cover" />
       </div>
+      <span className={cn("text-xs font-semibold", active ? "text-primary" : "text-foreground")}>
+        {name}
+      </span>
     </button>
   );
 }
