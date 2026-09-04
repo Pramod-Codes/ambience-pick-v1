@@ -22,7 +22,7 @@ export function DetailHero({
       <div className="relative h-[360px] w-full overflow-hidden">
         {active === 0 ? (
           <video
-            src="https://videos.pexels.com/video-files/18284447/18284447-sd_360_640_30fps.mp4"
+            src="https://videos.pexels.com/video-files/27809817/12229839_640_360_25fps.mp4"
             poster={images[0]}
             autoPlay
             muted

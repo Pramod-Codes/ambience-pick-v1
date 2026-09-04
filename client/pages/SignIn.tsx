@@ -8,6 +8,8 @@ import { useApp } from "@/context/AppContext";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=900&q=80";
+const HERO_VIDEO =
+  "https://videos.pexels.com/video-files/27809817/12229839_640_360_25fps.mp4";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ export default function SignIn() {
 
   return (
     <Shell noPadBottom>
-      <WaveHero image={HERO_IMAGE} height="h-[38vh]" />
+      <WaveHero image={HERO_IMAGE} video={HERO_VIDEO} height="h-[38vh]" />
       <form
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col gap-6 px-7 pb-8 pt-1"

@@ -3,20 +3,34 @@ import { cn } from "@/lib/utils";
 
 export function WaveHero({
   image,
+  video,
   height = "h-[46vh]",
   children,
 }: {
   image: string;
+  video?: string;
   height?: string;
   children?: ReactNode;
 }) {
   return (
     <div className={cn("relative w-full overflow-hidden", height)}>
-      <img
-        src={image}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      {video ? (
+        <video
+          src={video}
+          poster={image}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <img
+          src={image}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
       {children}
       <svg
         className="absolute bottom-0 left-0 w-full text-background"
