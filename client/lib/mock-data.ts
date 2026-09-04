@@ -47,7 +47,7 @@ export const CATEGORIES = [
     id: "seafood",
     name: "Seafood",
     image:
-      "https://images.unsplash.com/photo-1534080564583-35c9d92a54c8?auto=format&fit=crop&w=500&q=85",
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=500&q=85",
   },
   {
     id: "mediterranean",
