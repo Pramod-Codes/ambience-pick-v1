@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/context/AppContext";
 import Startup from "./pages/Startup";
 import SignIn from "./pages/SignIn";
@@ -30,11 +30,18 @@ function AppRoutes() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (showSplash) return <Startup />;
-
   return (
-    <Routes>
-      <Route path="/" element={<Startup />} />
+    <>
+      <div
+        aria-hidden={!showSplash}
+        className={`fixed inset-0 z-[100] transition-opacity duration-300 ${
+          showSplash ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <Startup />
+      </div>
+      <Routes>
+      <Route path="/" element={<Navigate to="/sign-in" replace />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/home" element={<Home />} />
       <Route path="/restaurant/:id" element={<RestaurantDetails />} />
@@ -48,7 +55,8 @@ function AppRoutes() {
       <Route path="/favorites" element={<Saved />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<NotFound />} />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
