@@ -4,12 +4,10 @@ import path from "node:path";
 import { createServer } from "./server";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
-  const base = repositoryName ? `/${repositoryName}/` : "/";
+export default defineConfig(() => {
 
   return {
-    base,
+    base: "/ambience-pick-v1/",
     server: {
       host: "::",
       port: 8080,
