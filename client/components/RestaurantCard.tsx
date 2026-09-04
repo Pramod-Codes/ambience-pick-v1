@@ -15,21 +15,21 @@ export function RestaurantCard({
   return (
     <Link
       to={`/restaurant/${restaurant.id}`}
-      className="flex gap-3 rounded-2xl bg-background p-3 shadow-card ring-1 ring-border/60 transition-transform active:scale-[0.98]"
+      className="flex min-h-[150px] gap-4 rounded-2xl bg-background p-4 shadow-card ring-1 ring-border/60 transition-transform active:scale-[0.98]"
     >
       <img
         src={restaurant.image}
         alt={restaurant.name}
-        className="h-24 w-24 shrink-0 rounded-xl object-cover"
+        className="h-[118px] w-[118px] shrink-0 rounded-xl object-cover"
       />
       <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="truncate font-heading text-[15px] font-semibold text-foreground">
+          <h3 className="truncate font-heading text-[17px] font-semibold leading-tight text-foreground">
             {restaurant.name}
           </h3>
           <span
             className={cn(
-              "shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold",
+              "shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold",
               restaurant.isOpen
                 ? "bg-success/15 text-success"
                 : "bg-muted text-muted-foreground",
@@ -48,19 +48,19 @@ export function RestaurantCard({
           </div>
         )}
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 pt-1">
           {restaurant.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+              className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="flex items-center gap-0.5 font-semibold text-foreground">
               <Star className="h-3.5 w-3.5 fill-warning text-warning" />
               {restaurant.rating}
@@ -83,7 +83,7 @@ export function RestaurantCard({
             />
           </button>
         </div>
-        <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Clock className="h-3 w-3" />
           {restaurant.hours}
         </div>

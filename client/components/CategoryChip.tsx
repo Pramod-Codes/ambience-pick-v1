@@ -18,13 +18,13 @@ export function CategoryChip({
     >
       <div
         className={cn(
-          "relative h-16 w-16 overflow-hidden rounded-2xl ring-2 transition-all",
+          "relative h-[78px] w-[78px] overflow-hidden rounded-2xl ring-2 transition-all",
           active ? "ring-primary" : "ring-transparent",
         )}
       >
         <img src={image} alt={name} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/35" />
-        <span className="absolute inset-x-0 bottom-1.5 text-center text-[11px] font-semibold text-white">
+        <span className="absolute inset-x-0 bottom-2 text-center text-xs font-semibold text-white">
           {name}
         </span>
       </div>
