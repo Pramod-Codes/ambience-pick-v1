@@ -50,7 +50,7 @@ export default function Home() {
               View all
             </button>
           </div>
-          <div className="flex gap-3 overflow-x-auto no-scrollbar">
+          <div className="flex gap-3 overflow-x-auto px-1 py-1 no-scrollbar">
             {CATEGORIES.map((cat) => (
               <CategoryChip
                 key={cat.id}
